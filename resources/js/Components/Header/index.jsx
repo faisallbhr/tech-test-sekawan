@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "@/Layouts/AuthenticatedLayout";
 
 export default function Index({ sidebarOpen, setSidebarOpen }) {
-  const user = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   return (
     <header className="sticky top-0 w-full bg-white drop-shadow-sm">
       <div className="flex flex-grow items-center justify-end lg:justify-end px-4 py-4 shadow md:px-6 2xl:px-11">

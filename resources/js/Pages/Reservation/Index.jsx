@@ -1,23 +1,22 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
-import formatRupiah from "@/Helpers/formatRupiah";
 import Pagination from "@/Components/Pagination";
 
-export default function Index({ auth, projects }) {
-  const deleteProject = (project) => {
-    if (!window.confirm("Are you sure you want to delete the project?")) {
+export default function Index({ auth, reservations }) {
+  const deleteReservation = (reservation) => {
+    if (!window.confirm("Apakah anda yakin akan menghapus reservasi?")) {
       return;
     }
-    router.delete(route("projects.destroy", project.id));
+    router.delete(route("reservations.destroy", reservation.id));
   };
   return (
     <AuthenticatedLayout user={auth.user}>
-      <Head title="Projects" />
+      <Head title="Reservasi" />
       <Link
-        href={route("projects.create")}
+        href={route("reservations.create")}
         className="bg-primary hover:bg-opacity-90 duration-150 text-white font-semibold px-4 py-2 rounded inline-block mb-4"
       >
-        New Project
+        Reservasi
       </Link>
       <div className="rounded-sm border border-stroke bg-white px-5 py-6 shadow-default sm:px-7">
         <div className="max-w-full overflow-x-auto">
@@ -28,13 +27,16 @@ export default function Index({ auth, projects }) {
                   #
                 </th>
                 <th className="min-w-[220px] py-4 px-4 font-medium text-black">
-                  Project Name
+                  Peminjam
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black text-center">
-                  Down Payment
+                  Kendaraan
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black text-center">
+                  Driver
                 </th>
                 <th className="min-w-[140px] py-4 px-4 font-medium text-black text-center">
-                  Due Date
+                  Tanggal
                 </th>
                 <th className="min-w-[140px] py-4 px-4 font-medium text-black text-center">
                   Status
@@ -45,61 +47,66 @@ export default function Index({ auth, projects }) {
               </tr>
             </thead>
             <tbody>
-              {projects.data.map((project, index) => (
-                <tr key={project.id}>
+              {reservations.data.map((reservation, index) => (
+                <tr key={reservation.id}>
                   <td className="border-b border-[#eee] py-5 px-4 text-black">
-                    {(projects.meta.current_page - 1) * projects.meta.per_page +
+                    {(reservations.meta.current_page - 1) *
+                      reservations.meta.per_page +
                       index +
                       1}
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4">
-                    <h5 className="font-medium text-black">{project.name}</h5>
-                    <span className="text-sm">
-                      {formatRupiah(project.budget)}
-                    </span>
+                    <h5 className="font-medium text-black">
+                      {reservation.requester}
+                    </h5>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 text-black text-center">
-                    {project.down_payment ? project.down_payment + "%" : "-"}
+                    {reservation.vehicle.name}
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 text-black text-center">
-                    {project.due_date}
+                    {reservation.driver}
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 text-black text-center text-sm">
+                    {reservation.start_date} - {reservation.end_date}
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 text-center">
                     <span
                       className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-xs font-medium uppercase ${
-                        project.status === "done"
+                        reservation.status === "approved"
                           ? "bg-success text-success"
-                          : project.status === "in-progress"
-                          ? "bg-info text-info"
-                          : "bg-warning text-warning"
+                          : reservation.status === "pending"
+                          ? "bg-warning text-warning"
+                          : "bg-danger text-danger"
                       }`}
                     >
-                      {project.status}
+                      {reservation.status}
                     </span>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4">
                     <div className="flex items-center space-x-3.5 justify-center">
                       <button className="hover:text-primary">
-                        <svg
-                          className="fill-current"
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                            fill=""
-                          />
-                          <path
-                            d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                            fill=""
-                          />
-                        </svg>
+                        <Link href={route("reservations.show", reservation.id)}>
+                          <svg
+                            className="fill-current"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
+                              fill=""
+                            />
+                            <path
+                              d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
+                              fill=""
+                            />
+                          </svg>
+                        </Link>
                       </button>
                       <button
-                        onClick={() => deleteProject(project)}
+                        onClick={() => deleteReservation(reservation)}
                         className="hover:text-danger"
                       >
                         <svg
@@ -136,7 +143,7 @@ export default function Index({ auth, projects }) {
           </table>
         </div>
         <div className="mt-6 md:mt-8 flex justify-center md:justify-end">
-          <Pagination links={projects.meta.links} />
+          <Pagination links={reservations.meta.links} />
         </div>
       </div>
     </AuthenticatedLayout>

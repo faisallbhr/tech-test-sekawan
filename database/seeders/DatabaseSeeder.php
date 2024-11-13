@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Project;
 use App\Models\User;
+use App\Models\Project;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Vehicle;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,13 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Faisal Bahari',
-            'email' => 'faisal@mail.com',
-            'password' => bcrypt('password'),
-            'email_verified_at' => time()
+        $this->call([
+            UserSeeder::class,
         ]);
-
-        Project::factory()->count(100)->hasTasks(10)->create();
+        Vehicle::factory()->count(10)->create();
     }
 }
