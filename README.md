@@ -28,3 +28,7 @@
 -   Admin memilih approver sesuai level
 -   Approver menyetujui/menolak berdasarkan level (jika level sebelumnya belum menyetujui, maka reservasi kendaraan tidak muncul)
 -   Jika salah satu approver menolak, maka reservasi kendaraan tidak dilanjutkan
+
+## Database diagram pemesanan
+
+![Database Diagram](docs/db-diagram.png)
