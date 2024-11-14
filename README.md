@@ -14,13 +14,13 @@
 
 ## Daftar Akun
 
-| Role       | Email                | Password   |
-| ---------- | -------------------- | ---------- |
-| Admin      | `admin@mail.com`     | `password` |
-| Approver 1 | `approver1@mail.com` | `password` |
-| Approver 2 | `approver2@mail.com` | `password` |
-| Approver 3 | `approver3@mail.com` | `password` |
-| Approver 4 | `approver4@mail.com` | `password` |
+| Role     | Email                | Password   |
+| -------- | -------------------- | ---------- |
+| Admin    | `admin@mail.com`     | `password` |
+| Approver | `approver1@mail.com` | `password` |
+| Approver | `approver2@mail.com` | `password` |
+| Approver | `approver3@mail.com` | `password` |
+| Approver | `approver4@mail.com` | `password` |
 
 ## Alur penggunaan
 
